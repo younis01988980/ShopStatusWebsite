@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم صاحب المحل</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h2 {
+            color: #34495e;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .shop-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: #2980b9; /* لون الزر */
+            position: relative;
+            transition: all 0.4s;
+            border-radius: 8px; /* إضافة زوايا مدورة */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background-color: #1c6693; /* لون الزر عند التمرير */
+        }
+        .status-label {
+            font-size: 24px; /* زيادة حجم الخط */
+            font-weight: bold;
+            margin-top: 5px;
+            color: #34495e; /* لون النص الثابت */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>لوحة تحكم صاحب المحل</h2>
+        <div class="shop-name">المحل: {{ shop.name }}</div>
+        <button class="btn" id="statusButton" onclick="toggleStatus()">تغيير الحالة</button>
+        <div class="status-label" id="statusLabel">{{ shop.status }}</div>
+        <form action="/update_status" method="POST" id="statusForm">
+            <input type="hidden" name="status" id="statusInput" value="{{ shop.status }}">
+        </form>
+    </div>
+
+    <script>
+        function toggleStatus() {
+            var statusInput = document.getElementById('statusInput');
+            var statusLabel = document.getElementById('statusLabel');
+
+            if (statusInput.value === 'مفتوح') {
+                statusInput.value = 'مغلق';
+                statusLabel.innerHTML = 'مغلق';
+            } else {
+                statusInput.value = 'مفتوح';
+                statusLabel.innerHTML = 'مفتوح';
+            }
+
+            document.getElementById('statusForm').submit();
+        }
+    </script>
+</body>
+</html>

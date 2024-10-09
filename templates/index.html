@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المحلات في قرية تل الشعير</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            font-size: 30px; /* حجم عنوان الصفحة */
+            color: #2980b9;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none; /* إزالة النقاط من القائمة */
+            padding: 0;
+        }
+        li {
+            background-color: #ffffff; /* لون خلفية العناصر */
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px; /* زوايا مدورة للعناصر */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* محاذاة المحتوى */
+            align-items: center; /* محاذاة العناصر عموديًا */
+        }
+        .shop-name {
+            font-size: 24px; /* حجم اسم المحل */
+            font-weight: bold; /* جعل اسم المحل عريض */
+        }
+        .status-container {
+            display: flex;
+            align-items: center; /* محاذاة العناصر عموديًا */
+            padding: 5px; /* مساحة داخلية للمربع */
+            border-radius: 5px; /* زوايا مدورة للمربع */
+            background-color: #e0e0e0; /* لون خلفية المربع */
+        }
+        .shop-status {
+            font-size: 20px; /* حجم حالة المحل */
+            font-weight: bold; /* جعل الخط عريض */
+            margin-right: 5px; /* مسافة بين النقطة والكلمة */
+        }
+        .status-indicator {
+            width: 10px; /* عرض النقطة */
+            height: 10px; /* ارتفاع النقطة */
+            border-radius: 50%; /* جعلها دائرة */
+            margin-left: 5px; /* مسافة بين النقطة والكلمة */
+        }
+        .status-closed {
+            color: red; /* لون النص للحالة "مغلق" */
+        }
+        .status-open {
+            color: green; /* لون النص للحالة "مفتوح" */
+        }
+    </style>
+</head>
+<body>
+    <h1>قائمة المحلات في قرية تل الشعير</h1>
+    <ul>
+        {% for shop in shops %}
+            <li>
+                <span class="shop-name">{{ shop['name'] }}</span>
+                <span class="status-container">
+                    <span class="status-indicator {{ 'status-closed' if shop['status'] == 'مغلق' else 'status-open' }}" 
+                          style="background-color: {{ 'red' if shop['status'] == 'مغلق' else 'green' }};"></span>
+                    <span class="shop-status">{{ shop['status'] }}</span>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
