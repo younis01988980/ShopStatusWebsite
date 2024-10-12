@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تغيير النص باستخدام Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <!-- تحديث المكتبة -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #number {
+            font-size: 24px;
+            color: coral;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: coral;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="number">1</h1>
+    <input type="text" id="newText" placeholder="أدخل النص هنا">
+    <button onclick="changeText()">موافق</button>
+
+    <script>
+        // التأكد من تحميل مكتبة Supabase أولاً
+        document.addEventListener("DOMContentLoaded", function() {
+            // تهيئة Supabase بعد التأكد من تحميل الصفحة بالكامل
+            const SUPABASE_URL = 'https://ndynbepcawuqaorimbtv.supabase.co';
+            const SUPABASE_PUBLIC_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5keW5iZXBjYXd1cWFvcmltYnR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg2MTIxNDEsImV4cCI6MjA0NDE4ODE0MX0.eG1840uquKxH41Tnw3hGde3UnT7qeIYLIX3JRtH_F1Y';
+            const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
+
+            // تحميل النص من Supabase عند فتح الصفحة
+            async function loadText() {
+                let { data, error } = await supabase
+                    .from('texts')
+                    .select('content')
+                    .eq('id', 1)  // افتراضًا أن هناك صفًا واحدًا فقط
+                    .single();
+
+                if (data) {
+                    document.getElementById('number').innerText = data.content;
+                } else if (error) {
+                    console.error('خطأ في جلب البيانات:', error);
+                }
+            }
+
+            // تغيير النص في Supabase
+            async function changeText() {
+                const newText = document.getElementById('newText').value;
+                if (newText) {
+                    // تحديث النص في قاعدة البيانات
+                    let { error } = await supabase
+                        .from('texts')
+                        .update({ content: newText })
+                        .eq('id', 1);  // افتراضًا أن هناك صفًا واحدًا فقط
+
+                    if (!error) {
+                        document.getElementById('number').innerText = newText;
+                    } else {
+                        console.error('خطأ في تحديث البيانات:', error);
+                    }
+                }
+            }
+
+            // استدعاء الدالة لتحميل النص عند تحميل الصفحة
+            loadText();
+
+            // إضافة الدالة إلى زر التأكيد بعد تهيئة Supabase
+            window.changeText = changeText;
+        });
+    </script>
+
+</body>
+</html>
